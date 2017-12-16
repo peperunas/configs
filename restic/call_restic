@@ -1,0 +1,18 @@
+#!/bin/sh
+
+ENV_FILES_PATH=/root/bin/backups
+
+if [[ $# -eq 0 ]]; then
+    	echo "Usage: $0 <env_vars> <action>"
+	exit 1
+fi
+
+source $ENV_FILES_PATH/$1
+
+if [[ $2 =~ [Bb]ackup ]]; then
+	restic backup -x $PATH_TO_BACKUP
+fi
+
+if [[ $2 =~ [Cc]lean ]]; then
+	restic forget --prune -l $SNAPSHOTS_TO_REMEMBER
+fi
