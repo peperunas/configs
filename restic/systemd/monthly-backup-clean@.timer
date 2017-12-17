@@ -1,8 +1,8 @@
 [Unit]
-Description=timer for daily backup clean of %i
+Description=timer for monthly backup clean of %i
 
 [Timer]
-OnCalendar=daily
+OnCalendar=monthly
 Persistent=true
 Unit=run-backup-clean@%i.service
 
