@@ -1,6 +1,6 @@
 # Restic backup configs
 
-Just create a `.env` file and use the `call_restic` script to execute/clean a repository.
+Just create a `.env` file and use the `call_restic` script to backup/clean a repository.
 
 Make sure to edit the `ENV_FILES_PATH` in `call_restic` (and in the systemd unit files, if you use them)!
 
