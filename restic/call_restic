@@ -16,3 +16,7 @@ fi
 if [[ $2 =~ [Cc]lean ]]; then
 	restic forget --prune -l $SNAPSHOTS_TO_REMEMBER
 fi
+
+if [[ $2 =~ [Uu]nlock ]]; then
+	restic unlock
+fi
