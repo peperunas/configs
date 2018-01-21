@@ -1,6 +1,7 @@
 [Unit]
 Description=backup clean of %i
+OnFailure=run-backup-onfailure@%i.service
+After=run-backup@%i.service
 
 [Service]
-Type=oneshot
 ExecStart=/root/bin/backups/call_restic %i.env clean

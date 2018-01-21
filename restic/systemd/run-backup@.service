@@ -1,5 +1,6 @@
 [Unit]
 Description=backup of %i
+OnFailure=run-backup-onfailure@%i.service
 
 [Service]
 Type=oneshot

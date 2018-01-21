@@ -16,3 +16,7 @@ fi
 if [[ $2 =~ [Cc]lean ]]; then
 	restic forget --prune -$FORGET_TYPE $FORGET_AMOUNT
 fi
+
+if [[ $2 =~ [Uu]nlock ]]; then
+	restic unlock
+fi
