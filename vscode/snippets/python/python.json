@@ -1,0 +1,36 @@
+{
+	"Angr boilerplate code": {
+		"prefix": "import angr",
+		"body": [
+			"import angr, logging, claripy, simuvex",
+			"from IPython import embed",
+			"",
+			"class custom_hook(simuvex.SimProcedure):",
+			"	def run(self, args):",
+			"		return 0",
+			"",
+			"def start_angr():",
+			"	start = 0x0",
+			"	find = (0x0)",
+			"	avoid = (0x0)",
+			"	hook_addr = 0x0",
+			"",
+			"	p = angr.Project(\"./bomb\", load_options={'auto_load_libs':False})",
+			"	p.hook(hook_addr, custom_hook)",
+			"	state = p.factory.blank_state(addr=start, add_options=simuvex.o.unicorn, remove_options={simuvex.o.LAZY_SOLVES})",
+			"	pg = p.factory.path_group(state, threads=4)",
+			"	pg.explore(find=find, avoid=avoid)",
+			"	print(pg)",
+			"	embed()",
+			"	return 0",
+			"",
+			"def main():",
+			"	start_angr()",
+			"",
+			"if __name__ == '__main__':",
+			"	logging.getLogger('angr.path_group').setLevel(logging.DEBUG)",
+			"	main()",
+		],
+		"description": "Create an angr dummy script"
+	}
+}
