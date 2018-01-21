@@ -14,8 +14,9 @@ Feel free to browse a basic example: [`local.env`](./local.env).
 | `RESTIC_PASSWORD`   | Your repository's password                                                                                                                                                                                                                                                                                                                                                    |
 | `PATH_TO_BACKUP`    | Your **local** path to backup                                                                                                                                                                                                                                                                                                                                                 |
 | `FORGET_TYPE`       | Defines how the remote snapshots should be purged when cleaning. The following `n` variable is defined by `FORGET_AMOUNT`. This field may be: "`l`" (**l**ast `n` snapshots), "`H`" (last `n` **H**ourly snapshots), "`d`"(last `n` **d**aily snapshots), "`w`" (last `n` **w**eekly snapshots), "`m`"(last `n` **m**onthly snapshots), "`y`" (last `n` **y**early snapshots) |
-| `FORGET_AMOUNT`     | The number of snapshots to remove                                                                                                                                                                                                                                     
-                                                                                                        |
+| `FORGET_AMOUNT`     | The number of snapshots to remove                                                                                                                                                                                                                                                                                                                                             |
+
+
 If you use **AWS**, **BackBlaze**, etc, you might need to export some specific repository's variable! Just add them to your `.env` file.
 
 ## `.env` example file
