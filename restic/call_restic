@@ -14,7 +14,7 @@ if [[ $2 =~ [Bb]ackup ]]; then
 fi
 
 if [[ $2 =~ [Cc]lean ]]; then
-	restic forget --prune -l $SNAPSHOTS_TO_REMEMBER
+	restic forget --prune -$FORGET_TYPE $FORGET_AMOUNT
 fi
 
 if [[ $2 =~ [Uu]nlock ]]; then
