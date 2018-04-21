@@ -2,7 +2,7 @@
 Description=timer for biweekly backup of %i starting from the second day of the month
 
 [Timer]
-OnCalendar=*-*-2 00:00:00
+OnCalendar=*-*-2,16 00:00:00
 Persistent=true
 Unit=run-backup@%i.service
 
