@@ -1,0 +1,220 @@
+# fuck it, let's do it here
+exec --no-startup-id xrdb -merge ~/.Xresources
+
+# New workspaces orientation
+default_orientation horizontal
+
+set $mod Mod1
+
+# etc vars
+
+set $background_dir "$HOME/.config/i3/backgrounds"
+
+# Monitor variables
+
+#set $laptop_monitor "eDP-1"
+#set $lab_monitor "DP-1"
+
+set $laptop_monitor "HDMI-1"
+set $lab_monitor "DP-2"
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $mail "7"
+set $stats "8"
+set $chat "9"
+set $music "10"
+
+# Monitor binding
+workspace $ws1 output $lab_monitor
+workspace $ws2 output $lab_monitor
+workspace $ws3 output $lab_monitor
+workspace $ws4 output $lab_monitor
+
+workspace $mail output $laptop_monitor
+workspace $stats output $laptop_monitor
+workspace $chat output $laptop_monitor
+workspace $music output $laptop_monitor
+
+# Workspace bindings
+assign [class="Thunderbird"] $mail
+assign [class="Signal"] $chat
+assign [class="Telegram"] $chat
+assign [class="Slack*"] $chat
+assign [class="[S|s]potify"] $music
+# Spotify workaround, see i3 documentation
+for_window [class="[S|s]potify"] move window to workspace $music
+
+# Window borders
+for_window [class="^.*"] border pixel 3
+for_window [class="[Aa]lbert"] border none
+
+# Gaps settings
+gaps inner 3
+gaps outer 6
+smart_gaps on
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:monospace 8
+
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+#font pango:DejaVu Sans Mono 8
+
+# Before i3 v4.8, we used to recommend this one as the default:
+# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+# The font above is very space-efficient, that is, it looks good, sharp and
+# clear in small sizes. However, its unicode glyph coverage is limited, the old
+# X core fonts rendering does not support right-to-left and this being a bitmap
+# font, it doesn’t scale on retina/hidpi displays.
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec urxvt
+
+# kill focused window
+bindsym $mod+q kill
+
+# Program launcher
+#bindsym $mod+a exec rofi -show-icons -show drun
+
+# Lock screen
+bindsym $mod+Control+l exec $HOME/.config/i3/bin/lock
+
+# Next workspace
+bindsym $mod+Tab workspace next
+
+# Change focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+d focus parent
+
+# Media keys (only working when sink is active)
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% 
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioPause exec --no-startup-id playerctl pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioStop exec --no-startup-id playerctl stop
+
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $mail
+bindsym $mod+8 workspace $stats
+bindsym $mod+9 workspace $chat
+bindsym $mod+0 workspace $music
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $stats
+bindsym $mod+Shift+9 move container to workspace $chat
+bindsym $mod+Shift+0 move container to workspace $music
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Monitor layout
+exec_always --no-startup-id python ~/.local/lib64/python3.6/site-packages/autorandr.py -c
+
+# autostart
+exec --no-startup-id albert
+exec --no-startup-id compton
+exec --no-startup-id nm-applet
+exec --no-startup-id pasystray
+exec --no-startup-id guake
+exec --no-startup-id i3-msg 'workspace $stats; exec urxvt -e glances; workspace $music; exec spotify; workspace $chat; exec slack; exec signal-desktop; exec telegram-desktop; workspace $stats; workspace $ws1'
+exec --no-startup-id nextcloud
+exec --no-startup-id redshift -l 51.507351:-0.127758 -t 3500:2000
+
+# Polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# Wallpaper
+exec_always --no-startup-id $HOME/.config/i3/bin/mpvbg

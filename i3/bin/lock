@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# icon=$HOME/.config/i3/lockscreen/icon.png
+tmpbg=/tmp/screen.png
+
+scrot $tmpbg
+convert $tmpbg -scale 10% -scale 1000% $tmpbg
+convert $tmpbg $icon -gravity center -composite -matte $tmpbg
+
+# stop music from playing
+playerctl stop
+
+i3lock -u -i $tmpbg
+
+rm $tmpbg
