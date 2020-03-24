@@ -77,3 +77,30 @@ As of now, **all the following fields have to be present in the configuration fi
 | `RETENTION_WEEKS`     | Keep the last **x** weekly snapshots.                                                                                                                                                                                                                                                                                                                                           |
 | `RETENTION_MONTHS`     | Keep the last **x** monthly snapshots.                                                                                                                                                                                                                                                                                                                                               |
 | `RETENTION_YEARS`     | Keep the last **x** yearly snapshots.                                                                                                                                                                                                                                                                                                                                              |
+
+## Using the configuration file without systemd
+
+You can also source the environment variables in the configuration file to invoke restic without the systemd service. This might be useful to restore a backup or debug restic.
+
+You can put this simple bash function into your `.bashrc` for the sake of comfort:
+
+    source_restic () {
+      RESTIC_CONF=/etc/restic/$1.conf
+
+      if [ ! -f "$RESTIC_CONF" ]; then
+        echo "$RESTIC_CONF does not exist"
+        return
+      fi
+
+      echo "Sourcing $RESTIC_CONF"
+
+      source $RESTIC_CONF
+      for x in `cut -d "=" -f1 $RESTIC_CONF`; do
+        export $x
+      done
+    }
+
+In this way it's just a matter of:
+
+    $ source_restic local
+    # $ restic <whatever>
