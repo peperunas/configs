@@ -4,6 +4,6 @@ Description=backup of %i
 [Service]
 Type=oneshot
 EnvironmentFile=/etc/restic/%i.conf
-ExecStart=restic backup --verbose -x $EXCLUDE_LIST $PATH_TO_BACKUP
+ExecStart=restic backup --verbose -x $RESTIC_BACKUP_ARGS $PATH_TO_BACKUP
 ExecStartPost=restic unlock
-ExecStartPost=restic forget --verbose --prune --keep-daily $RETENTION_DAYS --keep-weekly $RETENTION_WEEKS --keep-monthly $RETENTION_MONTHS --keep-yearly $RETENTION_YEARS
+ExecStartPost=restic forget --verbose --prune --keep-hourly $RETENTION_HOURS--keep-daily $RETENTION_DAYS --keep-weekly $RETENTION_WEEKS --keep-monthly $RETENTION_MONTHS --keep-yearly $RETENTION_YEARS
