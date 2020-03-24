@@ -2,11 +2,11 @@
 
 ## Quick start
 
-Create a configuration file which includes all the restic environmental variables needed for your backup. Put the file under `/etc/restic`. (e.g: `/etc/restic/local.conf`)
+Create a configuration file which includes all the restic environment variables needed for your backup. Put the file under `/etc/restic`. (e.g: `/etc/restic/local.conf`)
 
 Here is an example:
 
-    # restic environmental variables have to be declared in here
+    # restic environment variables have to be declared in here
 
     # restic remote repository
     #
@@ -38,7 +38,7 @@ You can find the file here: [`local.conf`](./local.conf).
 
 ## Configuration file structure
 
-The configuration file is sourced before calling restic therefore you may use restic's environmental variables as needed. If you use **AWS**, **BackBlaze**, etc, you might need to export some specific repository's variable.
+The configuration file is sourced before calling restic therefore you may use restic's environment variables as needed. If you use **AWS**, **BackBlaze**, etc, you might need to export some specific repository's variable.
 
 You can find the documentation here: [restic environmental variables.](https://restic.readthedocs.io/en/latest/040_backup.html#environment-variables).
 
