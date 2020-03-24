@@ -43,7 +43,7 @@ Install this repo's systemd units found in `systemd/` to `/etc/systemd/user/`.
 From inside the `systemd/` directory, run:
 
     # cd into systemd/ first
-    for x in *; do ln -s `realpath $x` /etc/systemd/user; done
+    for x in *; do cp $x /etc/systemd/user; done
     
 ### Starting the services
 
@@ -67,12 +67,12 @@ The configuration file is sourced before calling restic therefore you may use re
 
 You can find the documentation here: [restic environment variables.](https://restic.readthedocs.io/en/latest/040_backup.html#environment-variables).
 
+As of now, **all the following fields have to be present in the configuration file**.
 
 | Name                | Description                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `PATH_TO_BACKUP`    | Your **local** path to backup.                                                                                                                                                                                                                                                                                                                                               |
 | `RESTIC_BACKUP_ARGS`   | A space separated list of extra arguments to be passed to restic.                                                                                                                                                                                                                                                                                                                                                |
-| `RETENTION_HOURS`     | Keep the last **x** hourly snapshots.                                                                                                                                                                                                                                                                                                                                  |
 | `RETENTION_DAYS`     | Keep the last **x** daily snapshots.                                                                                                                                                                                                                                                                                                                                  |
 | `RETENTION_WEEKS`     | Keep the last **x** weekly snapshots.                                                                                                                                                                                                                                                                                                                                           |
 | `RETENTION_MONTHS`     | Keep the last **x** monthly snapshots.                                                                                                                                                                                                                                                                                                                                               |
