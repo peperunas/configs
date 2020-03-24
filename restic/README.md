@@ -1,29 +1,79 @@
-# Restic backup configs
+# Restic automatic backup
 
-Just create a `.env` file (its structure is defined below), **export** each variable and use the `call_restic` script to backup/clean a repository.
+## Quick start
 
-Make sure to edit the `ENV_FILES_PATH` in `call_restic` (and in the systemd unit files, if you use them)!
+### Creating a configuration file
 
-Feel free to browse a basic example: [`local.env`](./local.env).
+Create a configuration file which includes all the restic environment variables needed for your backup. Put the file under `/etc/restic`. (e.g: `/etc/restic/local.conf`)
 
-## `.env` structure
+Here is an example (you can find the file here: [`local.conf`](./local.conf)):
+
+    # restic environment variables have to be declared in here
+
+    # restic remote repository
+    #
+    # check restic documentation for 
+    # additional env vars to
+    # support AWS/Backblaze backends. e.g:
+    # B2_ACCOUNT_ID=xxx
+    # B2_ACCOUNT_KEY=xxx
+    RESTIC_REPOSITORY=/backup/restic
+    # repository's password
+    RESTIC_PASSWORD=Something
+
+    # local path to backup
+    PATH_TO_BACKUP=/
+
+    # retention rules
+    RETENTION_DAYS=45
+    RETENTION_WEEKS=12
+    RETENTION_MONTHS=9
+    RETENTION_YEARS=2
+
+    # files exclusion list
+    EXCLUDE_LIST="--exclude /somewhere"
+    
+    # list of args to pass to restic
+    RESTIC_ARGS="$EXCLUDE_LIST"
+
+### Systemd units installation
+
+Install this repo's systemd units found in `systemd/` to `/etc/systemd/user/`.
+
+From inside the `systemd/` directory, run:
+
+    # cd into systemd/ first
+    for x in *; do ln -s `realpath $x` /etc/systemd/user; done
+    
+### Starting the services
+
+I have wrote a main backup unit, [`run-backup`](./systemd/run-backup@.service), and several timers / helpers to handle the automatic backups.
+
+If you want to run a **one-shot backup**, run:
+
+    # this assumes that you created /etc/restic/local.conf
+    systemctl start run-backup@local.service
+
+If you want to run **monthly backups**, you have to start the [`monthly-backup`](./systemd/monthly-backup@.timer) timer.
+
+    # this assumes that you created /etc/restic/local.conf
+    systemctl start monthly-backup@local.timer
+
+You can find the other timers in `systemd/`.
+
+## Configuration file structure
+
+The configuration file is sourced before calling restic therefore you may use restic's environment variables as needed. If you use **AWS**, **BackBlaze**, etc, you might need to export some specific repository's variable.
+
+You can find the documentation here: [restic environment variables.](https://restic.readthedocs.io/en/latest/040_backup.html#environment-variables).
+
 
 | Name                | Description                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `RESTIC_REPOSITORY` | The place **(remote)** where your backups will be saved                                                                                                                                                                                                                                                                                                                       |
-| `RESTIC_PASSWORD`   | Your repository's password                                                                                                                                                                                                                                                                                                                                                    |
-| `PATH_TO_BACKUP`    | Your **local** path to backup                                                                                                                                                                                                                                                                                                                                                 |
-| `FORGET_TYPE`       | Defines how the remote snapshots should be purged when cleaning. The following `n` variable is defined by `FORGET_AMOUNT`. This field may be: "`l`" (**l**ast `n` snapshots), "`H`" (last `n` **H**ourly snapshots), "`d`"(last `n` **d**aily snapshots), "`w`" (last `n` **w**eekly snapshots), "`m`"(last `n` **m**onthly snapshots), "`y`" (last `n` **y**early snapshots) |
-| `FORGET_AMOUNT`     | The number of snapshots to remove                                                                                                                                                                                                                                                                                                                                             |
-
-
-If you use **AWS**, **BackBlaze**, etc, you might need to export some specific repository's variable! Just add them to your `.env` file.
-
-## `.env` example file
-
-An example is available [here](./local.env).
-
-## systemd
-
-In the `systemd/` folder there are the unit files I use to run my backups.
-
+| `PATH_TO_BACKUP`    | Your **local** path to backup.                                                                                                                                                                                                                                                                                                                                               |
+| `RESTIC_BACKUP_ARGS`   | A space separated list of extra arguments to be passed to restic.                                                                                                                                                                                                                                                                                                                                                |
+| `RETENTION_HOURS`     | Keep the last **x** hourly snapshots.                                                                                                                                                                                                                                                                                                                                  |
+| `RETENTION_DAYS`     | Keep the last **x** daily snapshots.                                                                                                                                                                                                                                                                                                                                  |
+| `RETENTION_WEEKS`     | Keep the last **x** weekly snapshots.                                                                                                                                                                                                                                                                                                                                           |
+| `RETENTION_MONTHS`     | Keep the last **x** monthly snapshots.                                                                                                                                                                                                                                                                                                                                               |
+| `RETENTION_YEARS`     | Keep the last **x** yearly snapshots.                                                                                                                                                                                                                                                                                                                                              |
