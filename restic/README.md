@@ -2,9 +2,11 @@
 
 ## Quick start
 
+### Creating a configuration file
+
 Create a configuration file which includes all the restic environment variables needed for your backup. Put the file under `/etc/restic`. (e.g: `/etc/restic/local.conf`)
 
-Here is an example:
+Here is an example (you can find the file here: [`local.conf`](./local.conf)):
 
     # restic environment variables have to be declared in here
 
@@ -34,7 +36,25 @@ Here is an example:
     # list of args to pass to restic
     RESTIC_ARGS="$EXCLUDE_LIST"
 
-You can find the file here: [`local.conf`](./local.conf).
+### Systemd units installation
+
+Install this repo's systemd units found in `systemd/` to `~/.config/systemd/user/`.
+
+### Enable and/or starting the services
+
+I have wrote a main backup unit, [`run-backup`](./systemd/run-backup@.service), and several timers / helpers to handle the automatic backups.
+
+If you want to run a **one-shot backup**, run:
+
+    # this assumes that you created /etc/restic/local.conf
+    systemctl start run-backup@local.service
+
+If you want to run **monthly backups**, you have to enable the [`monthly-backup`](./systemd/monthly-backup@.timer) timer.
+
+    # this assumes that you created /etc/restic/local.conf
+    systemctl enable monthly-backup@local.timer
+
+You can find the other timers in `systemd/`.
 
 ## Configuration file structure
 
