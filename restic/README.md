@@ -40,7 +40,7 @@ You can find the file here: [`local.conf`](./local.conf).
 
 The configuration file is sourced before calling restic therefore you may use restic's environment variables as needed. If you use **AWS**, **BackBlaze**, etc, you might need to export some specific repository's variable.
 
-You can find the documentation here: [restic environmental variables.](https://restic.readthedocs.io/en/latest/040_backup.html#environment-variables).
+You can find the documentation here: [restic environment variables.](https://restic.readthedocs.io/en/latest/040_backup.html#environment-variables).
 
 
 | Name                | Description                                                                                                                                                                                                                                                                                                                                                                   |
