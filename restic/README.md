@@ -45,7 +45,7 @@ From inside the `systemd/` directory, run:
     # cd into systemd/ first
     for x in *; do ln -s `realpath $x` ~/.config/systemd/user; done
     
-### Enable and/or starting the services
+### Starting the services
 
 I have wrote a main backup unit, [`run-backup`](./systemd/run-backup@.service), and several timers / helpers to handle the automatic backups.
 
@@ -54,10 +54,10 @@ If you want to run a **one-shot backup**, run:
     # this assumes that you created /etc/restic/local.conf
     systemctl start run-backup@local.service
 
-If you want to run **monthly backups**, you have to enable the [`monthly-backup`](./systemd/monthly-backup@.timer) timer.
+If you want to run **monthly backups**, you have to start the [`monthly-backup`](./systemd/monthly-backup@.timer) timer.
 
     # this assumes that you created /etc/restic/local.conf
-    systemctl enable monthly-backup@local.timer
+    systemctl start monthly-backup@local.timer
 
 You can find the other timers in `systemd/`.
 
