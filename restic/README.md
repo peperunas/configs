@@ -34,7 +34,7 @@ Here is an example (you can find the file here: [`local.conf`](./local.conf)):
     EXCLUDE_LIST="--exclude /somewhere"
     
     # list of args to pass to restic
-    RESTIC_ARGS="$EXCLUDE_LIST"
+    RESTIC_BACKUP_ARGS="$EXCLUDE_LIST"
 
 ### Systemd units installation
 
