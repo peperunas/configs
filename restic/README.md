@@ -38,12 +38,12 @@ Here is an example (you can find the file here: [`local.conf`](./local.conf)):
 
 ### Systemd units installation
 
-Install this repo's systemd units found in `systemd/` to `~/.config/systemd/user/`.
+Install this repo's systemd units found in `systemd/` to `/etc/systemd/user/`.
 
 From inside the `systemd/` directory, run:
 
     # cd into systemd/ first
-    for x in *; do ln -s `realpath $x` ~/.config/systemd/user; done
+    for x in *; do ln -s `realpath $x` /etc/systemd/user; done
     
 ### Starting the services
 
