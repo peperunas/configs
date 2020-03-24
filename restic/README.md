@@ -8,33 +8,35 @@ Create a configuration file which includes all the restic environment variables 
 
 Here is an example (you can find the file here: [`local.conf`](./local.conf)):
 
-    # restic environment variables have to be declared in here
+```bash
+# restic environment variables have to be declared in here
 
-    # restic remote repository
-    #
-    # check restic documentation for 
-    # additional env vars to
-    # support AWS/Backblaze backends. e.g:
-    # B2_ACCOUNT_ID=xxx
-    # B2_ACCOUNT_KEY=xxx
-    RESTIC_REPOSITORY=/backup/restic
-    # repository's password
-    RESTIC_PASSWORD=Something
+# restic remote repository
+#
+# check restic documentation for 
+# additional env vars to
+# support AWS/Backblaze backends. e.g:
+# B2_ACCOUNT_ID=xxx
+# B2_ACCOUNT_KEY=xxx
+RESTIC_REPOSITORY=/backup/restic
+# repository's password
+RESTIC_PASSWORD=Something
 
-    # local path to backup
-    PATH_TO_BACKUP=/
+# local path to backup
+PATH_TO_BACKUP=/
 
-    # retention rules
-    RETENTION_DAYS=45
-    RETENTION_WEEKS=12
-    RETENTION_MONTHS=9
-    RETENTION_YEARS=2
+# retention rules
+RETENTION_DAYS=45
+RETENTION_WEEKS=12
+RETENTION_MONTHS=9
+RETENTION_YEARS=2
 
-    # files exclusion list
-    EXCLUDE_LIST="--exclude /somewhere"
-    
-    # list of args to pass to restic
-    RESTIC_BACKUP_ARGS="$EXCLUDE_LIST"
+# files exclusion list
+EXCLUDE_LIST="--exclude /somewhere"
+
+# list of args to pass to restic
+RESTIC_BACKUP_ARGS="$EXCLUDE_LIST"
+```
 
 ### Systemd units installation
 
@@ -42,22 +44,28 @@ Install this repo's systemd units found in `systemd/` to `/etc/systemd/user/`.
 
 From inside the `systemd/` directory, run:
 
-    # cd into systemd/ first
-    for x in *; do cp $x /etc/systemd/user; done
-    
+```bash
+# cd into systemd/ first
+for x in *; do cp $x /etc/systemd/user; done
+```    
+
 ### Starting the services
 
 I have wrote a main backup unit, [`run-backup`](./systemd/run-backup@.service), and several timers / helpers to handle the automatic backups.
 
 If you want to run a **one-shot backup**, run:
 
-    # this assumes that you created /etc/restic/local.conf
-    systemctl start run-backup@local.service
+```bash
+# this assumes that you created /etc/restic/local.conf
+systemctl start run-backup@local.service
+```
 
 If you want to run **monthly backups**, you have to start the [`monthly-backup`](./systemd/monthly-backup@.timer) timer.
 
-    # this assumes that you created /etc/restic/local.conf
-    systemctl start monthly-backup@local.timer
+```bash
+# this assumes that you created /etc/restic/local.conf
+systemctl start monthly-backup@local.timer
+```
 
 You can find the other timers in `systemd/`.
 
@@ -82,23 +90,27 @@ You can also source the environment variables in the configuration file to invok
 
 You can put this simple bash function into your `.bashrc` for the sake of comfort:
 
-    source_restic () {
-      RESTIC_CONF=/etc/restic/$1.conf
+```bash
+source_restic () {
+  RESTIC_CONF=/etc/restic/$1.conf
 
-      if [ ! -f "$RESTIC_CONF" ]; then
-        echo "$RESTIC_CONF does not exist"
-        return
-      fi
+  if [ ! -f "$RESTIC_CONF" ]; then
+    echo "$RESTIC_CONF does not exist"
+    return
+  fi
 
-      echo "Sourcing $RESTIC_CONF"
+  echo "Sourcing $RESTIC_CONF"
 
-      source $RESTIC_CONF
-      for x in `cut -d "=" -f1 $RESTIC_CONF`; do
-        export $x
-      done
-    }
+  source $RESTIC_CONF
+  for x in `cut -d "=" -f1 $RESTIC_CONF`; do
+    export $x
+  done
+}
+```
 
 In this way it's just a matter of:
 
-    $ source_restic local
-    # $ restic <whatever>
+```bash
+source_restic local
+# restic <whatever>
+```
