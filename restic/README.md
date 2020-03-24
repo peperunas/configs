@@ -40,6 +40,11 @@ Here is an example (you can find the file here: [`local.conf`](./local.conf)):
 
 Install this repo's systemd units found in `systemd/` to `~/.config/systemd/user/`.
 
+From inside the `systemd/` directory, run:
+
+    # cd into systemd/ first
+    for x in *; do ln -s `realpath $x` ~/.config/systemd/user; done
+    
 ### Enable and/or starting the services
 
 I have wrote a main backup unit, [`run-backup`](./systemd/run-backup@.service), and several timers / helpers to handle the automatic backups.
