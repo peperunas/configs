@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# http://github.com/mitchweaver/bin
+#
+# play a video on the root window
+#
+
+pkill -9 xwinwrap
+
+xwin="xwinwrap -ni -b -fs -ov -nf -- "
+
+mpv="mpv --wid WID --no-config --keepaspect=no --loop \
+    --no-border --vd-lavc-fast --x11-bypass-compositor=no \
+    --gapless-audio=yes --vo=xv --hwdec=auto --really-quiet \
+    --name=mpvbg"
+
+if [ -z "$1" ]; then
+    # play random background from background dir
+    $xwin $mpv `$HOME/.config/i3/bin/random_background.sh` > /dev/null 2>&1 &
+else
+    # play background passed as argument
+    $xwin $mpv "$1" > /dev/null 2>&1 &
+fi
+
+echo -n $! > ${HOME}/.cache/mpvbg.pid
